@@ -5,17 +5,14 @@ using UnityEngine.UI;
 
 public class dialogScript : MonoBehaviour
 {
-
-    public string text = "testing";
-
+    //List of strings linear until it reaches null
     public List<string> dialogs;
-
-    public string[] dialogs1;
 
     Text dialog;
     public GameObject textBox;
-
     Coroutine typingDialog;
+
+    public int startingIndex = 0;
 
     private void Start()
     {
@@ -27,17 +24,26 @@ public class dialogScript : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
 
-        textBox.SetActive(true);
-        typingDialog = StartCoroutine(typeText(text, dialog));
+        if (collision.CompareTag("Player")) {
+
+            textBox.SetActive(true);
+            typingDialog = StartCoroutine(goThroughDialog(dialogs));
+
+        }
 
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
 
-        textBox.SetActive(false);
-        StopCoroutine(typingDialog);
-        dialog.text = null;
+        if (collision.CompareTag("Player"))
+        {
+
+            textBox.SetActive(false);
+            StopCoroutine(typingDialog);
+            dialog.text = null;
+
+        }
 
     }
 
@@ -46,8 +52,28 @@ public class dialogScript : MonoBehaviour
         for (int i = 0; i < text.Length; i++) { 
         
             dialog.text = dialog.text + text[i];
-
             yield return new WaitForSeconds(.05f);
+        
+        }
+    
+    }
+
+    public IEnumerator goThroughDialog(List<string> dialogs) { 
+    
+        int i = startingIndex;
+
+        while (i < dialogs.Count && dialogs[i] != null) {
+
+            StartCoroutine(typeText(dialogs[i], dialog));
+            yield return new WaitForSeconds(dialogs[i].Length * .05f + 1);
+
+            if (i != dialogs.Count-1)
+            {
+
+                dialog.text = null;
+
+            }
+            i++; 
         
         }
     

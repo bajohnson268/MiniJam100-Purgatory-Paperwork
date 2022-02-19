@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/office.unity
+    guid: 81bc10971ab5444409e115fbcf48196e
+  - enabled: 1
+    path: Assets/Scenes/ERROR.unity
+    guid: 0a32bb260c7d6f547becb00e75c97a11
+  - enabled: 1
+    path: Assets/Scenes/CATacombs.unity
+    guid: b33f18ee501c5d84a9f5e1e3d23d17f1
   m_configObjects: {}
