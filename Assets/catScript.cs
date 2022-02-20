@@ -5,16 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(movement))]
 [RequireComponent(typeof(Animator))]
 
-public class catScript : MonoBehaviour
+public class catScript : character
 {
 
     Vector2 move;
 
-    private void Start()
+    public bool Agressive;
+
+    float fireCooldown = 1.25f;
+    float timeOfNextFire;
+
+    public override void KillCharacter()
     {
         
+        gameObject.SetActive(false);
 
     }
+
 
     // Update is called once per frame
     void Update()
@@ -46,7 +53,30 @@ public class catScript : MonoBehaviour
 
         }
 
+        if (Agressive) {
 
+            GetComponent<movement>().followPlayer = true;
+
+            if ((GameObject.Find("player").transform.position - gameObject.transform.position).magnitude < .75 && timeOfNextFire < Time.time) {
+
+                StartCoroutine(fire());
+
+                timeOfNextFire = Time.time + fireCooldown;
+            
+            }
+
+        }
         
     }
+
+    public IEnumerator fire() {
+
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(.5f);
+
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+
+    }
+
 }

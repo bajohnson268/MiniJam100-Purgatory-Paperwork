@@ -10,6 +10,8 @@ public class movement : MonoBehaviour
     public Rigidbody2D rb2D;
 
     public float speed;
+    public bool followPlayer;
+    public bool canMove = true;
 
     [HideInInspector]
     public Vector2 rawMovement;

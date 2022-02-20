@@ -10,8 +10,6 @@ public class wanderMovement : movement
     public float stopChance;
     public float changeInterval;
 
-    public bool followPlayer;
-
     private GameObject player;
 
     Coroutine movementRoutine;
@@ -71,7 +69,7 @@ public class wanderMovement : movement
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player") && followPlayer) { 
+        if (collision.CompareTag("Player") && followPlayer && gameObject.activeSelf) { 
         
             player = collision.gameObject;
             StopCoroutine(movementRoutine);
@@ -84,7 +82,7 @@ public class wanderMovement : movement
     private void OnTriggerExit2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player") && followPlayer)
+        if (collision.CompareTag("Player") && followPlayer && gameObject.activeSelf)
         {
 
             player = null;

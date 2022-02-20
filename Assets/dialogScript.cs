@@ -10,7 +10,8 @@ public class dialogScript : MonoBehaviour
 
     Text dialog;
     public GameObject textBox;
-    Coroutine typingDialog;
+    Coroutine goingThroughDialog;
+    Coroutine typing;
 
     public int startingIndex = 0;
 
@@ -27,7 +28,7 @@ public class dialogScript : MonoBehaviour
         if (collision.CompareTag("Player")) {
 
             textBox.SetActive(true);
-            typingDialog = StartCoroutine(goThroughDialog(dialogs));
+            goingThroughDialog = StartCoroutine(goThroughDialog(dialogs));
 
         }
 
@@ -40,7 +41,8 @@ public class dialogScript : MonoBehaviour
         {
 
             textBox.SetActive(false);
-            StopCoroutine(typingDialog);
+            StopCoroutine(goingThroughDialog);
+            StopCoroutine(typing);
             dialog.text = null;
 
         }
@@ -62,13 +64,19 @@ public class dialogScript : MonoBehaviour
     
         int i = startingIndex;
 
-        while (i < dialogs.Count && dialogs[i] != null) {
+        while (i < dialogs.Count && dialogs[i] != "null") {
 
-            StartCoroutine(typeText(dialogs[i], dialog));
-            yield return new WaitForSeconds(dialogs[i].Length * .05f + 1);
+            typing = StartCoroutine(typeText(dialogs[i], dialog));
+            yield return new WaitForSeconds(dialogs[i].Length * .05f + 2);
 
-            if (i != dialogs.Count-1)
+            if (i == dialogs.Count - 1 || dialogs[i+1] == "null")
             {
+                break;
+                //
+
+            }
+
+            else {
 
                 dialog.text = null;
 
