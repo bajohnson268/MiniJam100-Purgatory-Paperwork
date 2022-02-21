@@ -5,12 +5,14 @@ using UnityEngine;
 public class fireBreath : MonoBehaviour
 {
 
+    Coroutine damage;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
 
-            StartCoroutine(collision.gameObject.GetComponent<character>().DamageCharacter(1,0));
+            damage = StartCoroutine(collision.gameObject.GetComponent<character>().DamageCharacter(1, 0));
 
         }
 

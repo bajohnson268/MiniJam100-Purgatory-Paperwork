@@ -11,7 +11,7 @@ public class player2DTopdown : character
 
     bool isAttacking = false;
     
-    float punchCooldown = .75f;
+    float punchCooldown = .5f;
     float timeToNextPunch;
 
     character enemy;
@@ -42,7 +42,14 @@ public class player2DTopdown : character
 
     public override void KillCharacter()
     {
-        //go to death screen
+        playerStats.health = -1;
+        playerStats.catsPeace = false;
+        playerStats.catsMad = false;
+        playerStats.hasFish = false;
+        playerStats.monstersMad = false;
+        playerStats.monstersPeace = false;
+
+        SceneManager.LoadScene("death");
     }
 
     void FixedUpdate()
@@ -125,8 +132,11 @@ public class player2DTopdown : character
     {
         if (other.GetComponent<character>() != null && !other.isTrigger && !other.CompareTag("Player"))
         {
+            
 
             enemy = other.GetComponent<character>();
+
+            Debug.Log(enemy.gameObject.name);
 
         }
 

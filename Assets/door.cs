@@ -9,12 +9,14 @@ public class door : MonoBehaviour
     [SerializeField] string sceneName = "ERROR";
 
     bool playerIn = false;
+    GameObject player;
 
     public void Update()
     {
 
         if (Input.GetKeyDown(KeyCode.E) && playerIn) {
 
+            playerStats.health = player.GetComponent<character>().health;
             SceneManager.LoadScene(sceneName);
         
         }
@@ -27,6 +29,7 @@ public class door : MonoBehaviour
         if (collision.CompareTag("Player")) { 
         
             playerIn = true;
+            player = collision.gameObject;
         
         }
 
@@ -38,6 +41,7 @@ public class door : MonoBehaviour
         {
 
             playerIn = false;
+            player = null;
 
         }
 

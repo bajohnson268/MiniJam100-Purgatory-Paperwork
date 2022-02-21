@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8344408428066833382}
   - component: {fileID: 93802510640465282}
   - component: {fileID: 2839449391129037414}
-  - component: {fileID: 5531987455735784830}
+  - component: {fileID: 7952364480443447019}
   m_Layer: 0
   m_Name: cat1
   m_TagString: Untagged
@@ -163,8 +163,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 5
-  m_AngularDrag: 1
+  m_LinearDrag: 0.5
+  m_AngularDrag: 5
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   maxHealth: 0
   health: 0
   Agressive: 0
---- !u!114 &5531987455735784830
+--- !u!114 &7952364480443447019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,14 +198,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4032258070765971008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8d601b006a61b94ebc9def07cefabba, type: 3}
+  m_Script: {fileID: 11500000, guid: a460e1f729a547e44afd3af356ce0c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb2D: {fileID: 0}
-  speed: 0
+  speed: 0.5
   followPlayer: 0
   canMove: 1
   rawMovement: {x: 0, y: 0}
+  stopChance: 0.25
+  changeInterval: 2
 --- !u!1001 &7219471436725286456
 PrefabInstance:
   m_ObjectHideFlags: 0

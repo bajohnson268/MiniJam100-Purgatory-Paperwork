@@ -13,7 +13,7 @@ public class dialogScript : MonoBehaviour
     Coroutine goingThroughDialog;
     Coroutine typing;
 
-    public int startingIndex = 0;
+    public int startingIndex = 29;
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class dialogScript : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player")) {
+        if (collision.CompareTag("Player") && !collision.isTrigger && startingIndex < dialogs.Count) {
 
             textBox.SetActive(true);
             goingThroughDialog = StartCoroutine(goThroughDialog(dialogs));
@@ -34,15 +34,20 @@ public class dialogScript : MonoBehaviour
 
     }
 
-    public void OnTriggerExit2D(Collider2D collision)
+    public void OnTriggerExit2D(Collider2D collision )
     {
 
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !collision.isTrigger)
         {
 
             textBox.SetActive(false);
-            StopCoroutine(goingThroughDialog);
-            StopCoroutine(typing);
+
+            if(goingThroughDialog != null)
+                StopCoroutine(goingThroughDialog);
+
+            if(typing != null)
+                StopCoroutine(typing);
+
             dialog.text = null;
 
         }
@@ -54,7 +59,7 @@ public class dialogScript : MonoBehaviour
         for (int i = 0; i < text.Length; i++) { 
         
             dialog.text = dialog.text + text[i];
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitForSeconds(.03f);
         
         }
     
@@ -67,7 +72,7 @@ public class dialogScript : MonoBehaviour
         while (i < dialogs.Count && dialogs[i] != "null") {
 
             typing = StartCoroutine(typeText(dialogs[i], dialog));
-            yield return new WaitForSeconds(dialogs[i].Length * .05f + 2);
+            yield return new WaitForSeconds(dialogs[i].Length * .03f + 1.75f);
 
             if (i == dialogs.Count - 1 || dialogs[i+1] == "null")
             {
@@ -83,6 +88,12 @@ public class dialogScript : MonoBehaviour
             }
             i++; 
         
+        }
+
+        if (i+2 < dialogs.Count && dialogs[i + 2] != "null") {
+
+            startingIndex = i + 2;
+
         }
     
     }

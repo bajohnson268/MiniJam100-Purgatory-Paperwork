@@ -11,20 +11,23 @@ public class garden : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player")) { 
+        if (collision.CompareTag("Player") && !collision.isTrigger) { 
         
             numSteps++;
+
+            Debug.Log(numSteps);
 
             if (numSteps >= maxNumSteps)
             {
 
-                Debug.Log("mad");
+                GetComponent<dialogScript>().startingIndex = 3;
+                playerStats.monstersMad = true;
 
             }
 
             else {
 
-                Debug.Log("Stop that");
+               //Debug.Log("Stop that");
 
             }
         

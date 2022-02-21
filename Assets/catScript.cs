@@ -12,12 +12,26 @@ public class catScript : character
 
     public bool Agressive;
 
-    float fireCooldown = 1.25f;
+    float fireCooldown = 1.5f;
     float timeOfNextFire;
+
+    public new void Start()
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        spriteRen = GetComponent<SpriteRenderer>();
+
+        if (playerStats.killedCats) {
+
+            KillCharacter();
+        
+        }
+
+    }
 
     public override void KillCharacter()
     {
-        
+        playerStats.catsMad = true;
         gameObject.SetActive(false);
 
     }
@@ -53,9 +67,16 @@ public class catScript : character
 
         }
 
+        if (playerStats.catsMad) {
+
+            Agressive = true;
+        
+        }
+
         if (Agressive) {
 
             GetComponent<movement>().followPlayer = true;
+            GetComponent<movement>().speed = .5f;
 
             if ((GameObject.Find("player").transform.position - gameObject.transform.position).magnitude < .75 && timeOfNextFire < Time.time) {
 
@@ -73,7 +94,7 @@ public class catScript : character
 
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.25f);
 
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
 
