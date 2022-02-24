@@ -12,8 +12,12 @@ public class dialogScript : MonoBehaviour
     public GameObject textBox;
     Coroutine goingThroughDialog;
     Coroutine typing;
+    Coroutine skip;
+    Coroutine skipThroughDialog;
 
-    public int startingIndex = 29;
+    bool skipping = false;
+
+    public int startingIndex = 0;
 
     private void Start()
     {
@@ -34,21 +38,16 @@ public class dialogScript : MonoBehaviour
 
     }
 
-    public void OnTriggerExit2D(Collider2D collision )
+    public void OnTriggerExit2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("Player") && !collision.isTrigger)
+        if (collision.CompareTag("Player") && !collision.isTrigger && textBox.activeSelf)
         {
 
             textBox.SetActive(false);
-
-            if(goingThroughDialog != null)
-                StopCoroutine(goingThroughDialog);
-
-            if(typing != null)
-                StopCoroutine(typing);
-
+            StopAllCoroutines();
             dialog.text = null;
+            //skipping = true;
 
         }
 
@@ -56,25 +55,61 @@ public class dialogScript : MonoBehaviour
 
     public IEnumerator typeText(string text, Text dialog) {
 
-        for (int i = 0; i < text.Length; i++) { 
+        skip = StartCoroutine(skipText(text));
+
+        for (int i = 0; i <= text.Length; i++) { 
         
-            dialog.text = dialog.text + text[i];
-            yield return new WaitForSeconds(.03f);
+            dialog.text = text.Substring(0,i);
+            yield return new WaitForSeconds(.05f);
+            if (skipping) {
+
+                break;
+            
+            }
         
         }
+
+        skipping = false;
+        StopCoroutine(skip);
     
     }
 
-    public IEnumerator goThroughDialog(List<string> dialogs) { 
+    public IEnumerator skipText(string text) {
+
+        while (true) {
+
+            if (Input.GetKeyDown("e")) {
+
+                skipping = true;
+                dialog.text = text;
+
+            }
+
+            yield return new WaitForSeconds(.001f);
+        
+        }
     
-        int i = startingIndex;
+    } 
 
-        while (i < dialogs.Count && dialogs[i] != "null") {
+    public IEnumerator goThroughDialog(List<string> dialogs) {
 
-            typing = StartCoroutine(typeText(dialogs[i], dialog));
-            yield return new WaitForSeconds(dialogs[i].Length * .03f + 1.75f);
+        //skipThroughDialog = StartCoroutine(skipDialog());
 
-            if (i == dialogs.Count - 1 || dialogs[i+1] == "null")
+        while (startingIndex < dialogs.Count && dialogs[startingIndex] != "null") {
+
+            //typing = StartCoroutine(typeText(dialogs[startingIndex], dialog));
+
+            yield return typing = StartCoroutine(typeText(dialogs[startingIndex], dialog));
+
+            yield return new WaitForSeconds(.05f);
+
+            yield return skipThroughDialog = StartCoroutine(skipDialog());
+
+            yield return new WaitForSeconds(.05f);
+
+            //yield return new WaitForSeconds(dialogs[startingIndex].Length * .05f + 1.75f);
+
+            if (startingIndex == dialogs.Count - 1 || dialogs[startingIndex + 1] == "null")
             {
                 break;
                 //
@@ -86,14 +121,36 @@ public class dialogScript : MonoBehaviour
                 dialog.text = null;
 
             }
-            i++; 
+            startingIndex++; 
         
         }
 
-        if (i+2 < dialogs.Count && dialogs[i + 2] != "null") {
+        if (startingIndex + 2 < dialogs.Count && dialogs[startingIndex + 2] != "null") {
 
-            startingIndex = i + 2;
+            startingIndex = startingIndex + 2;
 
+        }
+
+        StopCoroutine(skipThroughDialog);
+    
+    }
+
+    public IEnumerator skipDialog() {
+
+        int x = 0;
+
+        while (x < 1500) {
+
+            if (Input.GetKeyDown("e"))
+            {
+
+                break;
+
+            }
+
+            yield return new WaitForSeconds(.001f);
+            x++;
+        
         }
     
     }

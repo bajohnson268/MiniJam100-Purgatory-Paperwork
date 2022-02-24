@@ -8,16 +8,16 @@ public class disableDoor : MonoBehaviour
     private void Update()
     {
 
-        if (!playerStats.talkedToCats)
+        if (playerStats.talkedToCats || playerStats.killedCats)
         {
 
-            GetComponent<enable>().disableAll();
+            GetComponent<enable>().enableAll();
 
         }
 
         else {
 
-            GetComponent<enable>().enableAll();
+            GetComponent<enable>().disableAll();
 
         }
 
